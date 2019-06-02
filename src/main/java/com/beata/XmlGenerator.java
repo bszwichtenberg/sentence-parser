@@ -46,7 +46,7 @@ public class XmlGenerator {
         StringWriter stringWriter = new StringWriter();
 
         Marshaller marshaller = createMarshaller();
-        marshaller.marshal(sentence,outputStream);
+        marshaller.marshal(sentence, stringWriter);
         String sentenceXml = stringWriter.toString() + "\n";
         outputStream.write(sentenceXml.getBytes());
 
