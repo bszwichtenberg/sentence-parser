@@ -19,9 +19,13 @@ public class CsvGenerator {
         }
     }
 
-    public void saveToCsv(String line) throws IOException {
+    public void saveToCsv(String line) {
 
-        Files.write(tempFilePath,line.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        try {
+            Files.write(tempFilePath,line.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private String generateCsvHeader(int sentenceLengthCounter) {
@@ -38,20 +42,23 @@ public class CsvGenerator {
         return stringBuilder.toString();
     }
 
-    public void createFinalCsvFile(int sentenceLengthCounter) throws IOException {
+    public void createFinalCsvFile(int sentenceLengthCounter) {
 
-        Files.write(finalFilePath, generateCsvHeader(sentenceLengthCounter).getBytes(), StandardOpenOption.CREATE);
+        try {
+            Files.write(finalFilePath, generateCsvHeader(sentenceLengthCounter).getBytes(), StandardOpenOption.CREATE);
 
-        String line;
-        BufferedReader bufferedReader = Files.newBufferedReader(tempFilePath);
-
-        while((line = bufferedReader.readLine()) != null) {
-            if(line.length() > 0) {
-                String lineWithEOL = line + System.lineSeparator();
-                Files.write(finalFilePath, lineWithEOL.getBytes(), StandardOpenOption.APPEND);
+            String line;
+            BufferedReader bufferedReader = null;
+            bufferedReader = Files.newBufferedReader(tempFilePath);
+            while((line = bufferedReader.readLine()) != null) {
+                if(line.length() > 0) {
+                    String lineWithEOL = line + System.lineSeparator();
+                    Files.write(finalFilePath, lineWithEOL.getBytes(), StandardOpenOption.APPEND);
+                }
             }
+            Files.delete(tempFilePath);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        Files.delete(tempFilePath);
     }
 }

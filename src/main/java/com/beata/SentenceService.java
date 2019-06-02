@@ -12,7 +12,7 @@ public class SentenceService {
     private XmlGenerator xmlGenerator;
     private CsvGenerator csvGenerator;
 
-    public SentenceService() throws Exception {
+    public SentenceService() {
 
         sentenceCounter = 0;
         sentenceLengthCounter = 0;
@@ -21,13 +21,13 @@ public class SentenceService {
         csvGenerator = new CsvGenerator();
     }
 
-    public void prepareFiles() throws IOException {
+    public void prepareFiles() {
 
         xmlGenerator.createDocumentHeader();
         csvGenerator.deleteIfCsvFilesAlreadyExist();
     }
 
-    public void processSentence(String line) throws JAXBException, IOException {
+    public void processSentence(String line) {
 
         List<String> wordsList = Arrays.asList(splitLineIntoWords(cleanLine(line)));
 
@@ -57,7 +57,7 @@ public class SentenceService {
 
     }
 
-    private void buildSentenceOutput(String word) throws JAXBException, IOException{
+    private void buildSentenceOutput(String word) {
 
         final String REGEX_END_OF_SENTENCE = "(.+)([.!?])";
 
@@ -72,16 +72,17 @@ public class SentenceService {
     }
 
 
-    private void finalizeSentence() throws JAXBException, IOException {
+    private void finalizeSentence() {
 
         Collections.sort(sentence.getWords(), String.CASE_INSENSITIVE_ORDER);
         setCounters();
         saveSentenceToXml(sentence);
-        saveSentenceToCsv(sentence);
+        saveSentenceToCsv(generateCsvLine(sentence));
         sentence.getWords().clear();
     }
 
     private void setCounters(){
+
         sentenceCounter++;
         setSentenceLengthCounter(sentence.getWords().size());
     }
@@ -105,25 +106,25 @@ public class SentenceService {
         }
     }
 
-    private void saveSentenceToXml(Sentence sentence) throws JAXBException, IOException{
-
-        xmlGenerator.marshalSentence(sentence);
-
-    }
-
-    private void saveSentenceToCsv(Sentence sentece) {
+    private String generateCsvLine(Sentence sentence) {
 
         final String SENTENCE_IDENTIFIER = "Sentence";
-        String line = (SENTENCE_IDENTIFIER + " " + sentenceCounter + sentence.toString() + System.lineSeparator());
 
-        try {
-            csvGenerator.saveToCsv(line);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String line = SENTENCE_IDENTIFIER + " " + sentenceCounter + sentence.toString() + System.lineSeparator();
+        return line;
     }
 
-    public void closeFiles() throws IOException {
+    private void saveSentenceToXml(Sentence sentence) {
+
+        xmlGenerator.saveToFile(xmlGenerator.marshalSentence(sentence));
+    }
+
+    private void saveSentenceToCsv(String line) {
+
+        csvGenerator.saveToCsv(line);
+    }
+
+    public void closeFiles() {
 
         xmlGenerator.closeXmlDocument();
         csvGenerator.createFinalCsvFile(sentenceLengthCounter);
