@@ -31,4 +31,3 @@ public class WordService {
         return word.replaceAll(REGEX_END_OF_SENTENCE, "$1");
     }
 }
-

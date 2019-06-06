@@ -15,6 +15,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class CsvGeneratorTest {
+
     @InjectMocks
     CsvGenerator testObj = new CsvGenerator();
 
@@ -45,5 +46,4 @@ class CsvGeneratorTest {
         //then
         assertThat(result).matches("Sentence 1, and, Dr., Jekyll, met, Mr., Ms., outside, Smith\n");
     }
-
 }
