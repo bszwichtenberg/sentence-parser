@@ -19,8 +19,16 @@ public class CsvGenerator {
         }
     }
 
-    public void saveToCsv(String line) {
+    public String prepareCsvLine(Integer sentenceCounter, Sentence sentence) {
 
+        final String SENTENCE_IDENTIFIER = "Sentence";
+
+        return SENTENCE_IDENTIFIER + " " + sentenceCounter + sentence.toString() + "\n";
+    }
+
+    public void saveToCsv(Integer sentenceCounter, Sentence sentence) {
+
+        String line = prepareCsvLine(sentenceCounter, sentence);
         try {
             Files.write(tempFilePath,line.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (IOException e) {
@@ -28,7 +36,7 @@ public class CsvGenerator {
         }
     }
 
-    private String generateCsvHeader(int sentenceLengthCounter) {
+    public String generateCsvHeader(int sentenceLengthCounter) {
 
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -37,7 +45,7 @@ public class CsvGenerator {
             stringBuilder.append(", Word " + j);
         }
 
-        stringBuilder.append(System.lineSeparator());
+        stringBuilder.append("\n");
 
         return stringBuilder.toString();
     }

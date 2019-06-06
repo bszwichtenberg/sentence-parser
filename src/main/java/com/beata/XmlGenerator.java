@@ -3,7 +3,6 @@ package com.beata;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import javax.xml.bind.PropertyException;
 import java.io.*;
 
 public class XmlGenerator {
@@ -40,7 +39,7 @@ public class XmlGenerator {
 
     public void createDocumentHeader() {
 
-         String xmlHeader = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+         String xmlHeader = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n";
          String openingTag = "<text>\n";
 
         try {
@@ -64,8 +63,6 @@ public class XmlGenerator {
         }
         String sentenceXml = stringWriter.toString() + "\n";
         return sentenceXml;
-
-
     }
 
     public void saveToFile(String sentenceXml) {
@@ -95,7 +92,6 @@ public class XmlGenerator {
     public void closeXmlDocument() {
 
         String closingTag = "</text>\n";
-
 
         try {
             outputStream.write(closingTag.getBytes());

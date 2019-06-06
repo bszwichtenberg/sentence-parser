@@ -17,8 +17,6 @@ public class Sentence {
         words = new ArrayList<>();
     }
 
-
-
     public void setWords(ArrayList<String> words) {
 
         this.words = words;
@@ -32,7 +30,7 @@ public class Sentence {
     @Override
     public String toString() {
 
-        final String SEPARATOR = ",";
+        final String SEPARATOR = ", ";
         StringBuilder stringBuilder = new StringBuilder();
 
         for (String word : words) {
