@@ -28,13 +28,7 @@ public class SentenceApp {
                 if(!line.isEmpty()) {
                     List<String> wordsList = lineService.splitLineIntoWords(lineService.cleanLine(line));
                     Map<Integer, Sentence> sentenceMap = sentenceService.buildSentence(wordsList);
-                    if(!sentenceMap.isEmpty()) {
-                        Set<Map.Entry<Integer,Sentence>> entrySet = sentenceMap.entrySet();
-                        for(Map.Entry<Integer, Sentence> entry: entrySet) {
-                            xmlGenerator.saveToFile(xmlGenerator.marshalSentence(entry.getValue()));
-                            csvGenerator.saveToCsv(entry.getKey(), entry.getValue());
-                        }
-                    }
+                    saveToFiles(xmlGenerator, csvGenerator, sentenceMap);
                 }
              }
         } catch (IOException e) {
@@ -43,5 +37,15 @@ public class SentenceApp {
 
         xmlGenerator.closeXmlDocument();
         csvGenerator.createFinalCsvFile(sentenceService.getSentenceLengthCounter());
+    }
+
+    private static void saveToFiles(XmlGenerator xmlGenerator, CsvGenerator csvGenerator, Map<Integer, Sentence> sentenceMap) {
+        if(!sentenceMap.isEmpty()) {
+            Set<Map.Entry<Integer,Sentence>> entrySet = sentenceMap.entrySet();
+            for(Map.Entry<Integer, Sentence> entry: entrySet) {
+                xmlGenerator.saveToFile(xmlGenerator.marshalSentence(entry.getValue()));
+                csvGenerator.saveToCsv(entry.getKey(), entry.getValue());
+            }
+        }
     }
 }
