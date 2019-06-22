@@ -30,7 +30,7 @@ class CsvGeneratorTest {
         //when
         String result = testObj.generateCsvHeader(givenCounter);
         //then
-        assertThat(result).matches(", Word 1, Word 3, Word 5\n");
+        assertThat(result).matches(", Word 1, Word 2, Word 3, Word 4, Word 5\n");
     }
 
     @Test

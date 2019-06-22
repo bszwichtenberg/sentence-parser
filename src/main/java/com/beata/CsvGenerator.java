@@ -41,7 +41,7 @@ public class CsvGenerator {
         StringBuilder stringBuilder = new StringBuilder();
 
         for(int i= 0; i < sentenceLengthCounter; i++ ) {
-            int j = ++i;
+            int j = i+1;
             stringBuilder.append(", Word " + j);
         }
 
